@@ -1,15 +1,18 @@
 syntax = "proto3";
+package prober; 
+option go_package = "./prober";
 
-package prober;
-
-service Greeter {
-  rpc SayHello (HelloRequest) returns (HelloReply);
+// The probe service definition
+service ProberService {
+  rpc DoProbes (ProbeRequest) returns (ProbeReply) {}
 }
 
-message HelloRequest {
-  string name = 1;
+// The request message
+message ProbeRequest {
+  string name =  1;
 }
 
-message HelloReply {
-  string message = 1;
+// The response message containing the result
+message ProbeReply {
+  float latency_msecs = 1;
 }
