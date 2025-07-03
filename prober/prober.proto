@@ -9,10 +9,11 @@ service ProberService {
 
 // The request message
 message ProbeRequest {
-  string name =  1;
+  string endpoint = 1;        // URL to probe
+  int32 repetitions = 2;      // Number of times to probe
 }
 
 // The response message containing the result
 message ProbeReply {
-  float latency_msecs = 1;
+  float latency_msecs = 1;    // Average response time in milliseconds
 }

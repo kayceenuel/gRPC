@@ -24,7 +24,8 @@ const (
 // The request message
 type ProbeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`        // URL to probe
+	Repetitions   int32                  `protobuf:"varint,2,opt,name=repetitions,proto3" json:"repetitions,omitempty"` // Number of times to probe
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,17 +60,24 @@ func (*ProbeRequest) Descriptor() ([]byte, []int) {
 	return file_prober_prober_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ProbeRequest) GetName() string {
+func (x *ProbeRequest) GetEndpoint() string {
 	if x != nil {
-		return x.Name
+		return x.Endpoint
 	}
 	return ""
+}
+
+func (x *ProbeRequest) GetRepetitions() int32 {
+	if x != nil {
+		return x.Repetitions
+	}
+	return 0
 }
 
 // The response message containing the result
 type ProbeReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	LatencyMsecs  float32                `protobuf:"fixed32,1,opt,name=latency_msecs,json=latencyMsecs,proto3" json:"latency_msecs,omitempty"`
+	LatencyMsecs  float32                `protobuf:"fixed32,1,opt,name=latency_msecs,json=latencyMsecs,proto3" json:"latency_msecs,omitempty"` // Average response time in milliseconds
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -115,9 +123,10 @@ var File_prober_prober_proto protoreflect.FileDescriptor
 
 const file_prober_prober_proto_rawDesc = "" +
 	"\n" +
-	"\x13prober/prober.proto\x12\x06prober\"\"\n" +
-	"\fProbeRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"1\n" +
+	"\x13prober/prober.proto\x12\x06prober\"L\n" +
+	"\fProbeRequest\x12\x1a\n" +
+	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x12 \n" +
+	"\vrepetitions\x18\x02 \x01(\x05R\vrepetitions\"1\n" +
 	"\n" +
 	"ProbeReply\x12#\n" +
 	"\rlatency_msecs\x18\x01 \x01(\x02R\flatencyMsecs2G\n" +
