@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
 	"flag"
+	"fmt"
 	"log"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -19,5 +22,18 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	cleint := pb.NewProberClient(conn)
+
+	client := pb.NewProberClient(conn)
+
+	//Unary call
+	cxt, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer.cancel()
+
+	res, err := client.DoProbes(ctx, &pb.ProbeRequest{
+		in.GetEndpoint(),
+		in.GetRepetitions(),
+	})
+	if err != nil {
+		fmt.Printf("Average response time: %f", res.GetLatencyMsecs())
+	}
 }
