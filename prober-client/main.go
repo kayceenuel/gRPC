@@ -10,7 +10,6 @@ import (
 
 var (
 	serverAddr = flag.String("serverAddr", "localhost:50051", "the address to connec to")
-
 )
 
 func main() {
@@ -19,6 +18,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	defer.conn.Close()
-	c := pb.NewProberClient(conn)
+	defer conn.Close()
+	cleint := pb.NewProberClient(conn)
 }
