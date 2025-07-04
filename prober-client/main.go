@@ -36,4 +36,5 @@ func main() {
 	if err != nil {
 		fmt.Printf("Average response time: %f", res.GetLatencyMsecs())
 	}
+	log.Fatalf("probe failed: %v", err)
 }
