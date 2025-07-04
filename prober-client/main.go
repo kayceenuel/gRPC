@@ -7,6 +7,8 @@ import (
 	"log"
 	"time"
 
+	pb "grpc-prober/prober"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -23,15 +25,15 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := pb.NewProberClient(conn)
+	client := pb.NewProberServiceClient(conn)
 
 	//Unary call
-	cxt, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer.cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
 
 	res, err := client.DoProbes(ctx, &pb.ProbeRequest{
-		in.GetEndpoint(),
-		in.GetRepetitions(),
+		Endpoint:    "http://www.google.com",
+		Repetitions: 2,
 	})
 	if err != nil {
 		fmt.Printf("Average response time: %f", res.GetLatencyMsecs())
