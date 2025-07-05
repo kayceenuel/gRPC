@@ -30,7 +30,7 @@ func (s *server) DoProbes(ctx context.Context, in *pb.ProbeRequest) (*pb.ProbeRe
 	var total time.Duration
 	var successCount int
 
-	client := &http.Client{Timeout: 5 * time.Second}
+	client := &http.Client{Timeout: 2 * time.Second}
 
 	for i := 0; i < int(repetitions); i++ {
 		start := time.Now()
