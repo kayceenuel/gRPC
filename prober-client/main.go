@@ -29,7 +29,7 @@ func main() {
 	client := pb.NewProberServiceClient(conn)
 
 	// connect the server and print out the response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
 	defer cancel()
 
 	res, err := client.DoProbes(ctx, &pb.ProbeRequest{
