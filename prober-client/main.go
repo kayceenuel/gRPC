@@ -19,6 +19,7 @@ var (
 
 func main() {
 	flag.Parse()
+	// set up a connection to the server.
 	conn, err := grpc.Dial(*serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -27,7 +28,7 @@ func main() {
 
 	client := pb.NewProberServiceClient(conn)
 
-	//Unary call
+	// connect the server and print out the response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
@@ -36,7 +37,8 @@ func main() {
 		Repetitions: 2,
 	})
 	if err != nil {
-		fmt.Printf("Average response time: %f", res.GetLatencyMsecs())
+		log.Fatalf("probe failed: %v", err) // Exit on error
 	}
-	log.Fatalf("probe failed: %v", err)
+	// Print response only if there's no error
+	fmt.Printf("Average response time: %f ms\n", res.GetLatencyMsecs())
 }
