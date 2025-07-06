@@ -11,11 +11,20 @@ import (
 
 	pb "grpc-prober/prober"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
 )
 
 var (
 	port = flag.Int("port", 50051, "the server port")
+	// Define the counter metric variables
+	ProbeRequestTotal = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "probe_request_total",
+			Help: "Latest probe latency in miliseconds",
+		},
+		[]string{"endpoint"},
+	)
 )
 
 // the server is used to implment the proberService
