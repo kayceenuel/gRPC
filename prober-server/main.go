@@ -21,7 +21,7 @@ var (
 	ProbeRequestTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "probe_request_total",
-			Help: "Latest probe latency in miliseconds",
+			Help: "Total number of probe requests",
 		},
 		[]string{"endpoint"},
 	)
