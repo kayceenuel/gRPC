@@ -45,6 +45,9 @@ func (s *server) DoProbes(ctx context.Context, in *pb.ProbeRequest) (*pb.ProbeRe
 	endpoint := in.GetEndpoint()
 	repetitions := in.GetRepetitions()
 
+	// Increment counter
+	ProbeRequestTotal.WithLabelValues(endpoint).Inc()
+
 	var total time.Duration
 	var successCount int
 
@@ -68,6 +71,9 @@ func (s *server) DoProbes(ctx context.Context, in *pb.ProbeRequest) (*pb.ProbeRe
 	if successCount > 0 {
 		avgMs = float32(total.Milliseconds()) / float32(successCount)
 	}
+
+	// gauge with latest latency
+	probeLatencyMs.WithLabelValues(endpoint).Set(float64(avgMs))
 
 	return &pb.ProbeReply{
 		LatencyMsecs: avgMs,
