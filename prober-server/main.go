@@ -25,6 +25,14 @@ var (
 		},
 		[]string{"endpoint"},
 	)
+
+	probeLatencyMs = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "probe_Latency_miliseconds",
+			Help: "Latest probe latency in miliseconds",
+		},
+		[]string{"endpoint"},
+	)
 )
 
 // the server is used to implment the proberService
