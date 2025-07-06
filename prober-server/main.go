@@ -12,6 +12,7 @@ import (
 	pb "grpc-prober/prober"
 
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 )
 
@@ -74,6 +75,17 @@ func (s *server) DoProbes(ctx context.Context, in *pb.ProbeRequest) (*pb.ProbeRe
 }
 
 func main() {
+	// Register metrics
+	prometheus.MustRegister(ProbeRequestTotal)
+	prometheus.MustRegister(probeLatencyMs)
+
+	// Start HTTP server for metrics
+	go func() {
+		http.Handle("/metrics", promhttp.Handler())
+		log.Println("Metrics server Listening on :8080")
+		log.Fatal(http.ListenAndServe(":8080", nil))
+	}()
+
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
